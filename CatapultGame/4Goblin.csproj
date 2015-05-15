@@ -139,6 +139,10 @@
     <Compile Include="GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PathFinder\AuthorAttribute.cs" />
+    <Compile Include="PathFinder\IPathFinder.cs" />
+    <Compile Include="PathFinder\PathFinderFast.cs" />
+    <Compile Include="PathFinder\PriorityQueueB.cs" />
     <Compile Include="Players\AI.cs" />
     <Compile Include="Players\Human.cs" />
     <Compile Include="Players\Player.cs" />
