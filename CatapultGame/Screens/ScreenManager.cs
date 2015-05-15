@@ -31,8 +31,8 @@ namespace GameStateManagement
     {
         #region Fields
 
-        List<GameScreen1> screens = new List<GameScreen1>();
-        List<GameScreen1> screensToUpdate = new List<GameScreen1>();
+        List<GameScreen> screens = new List<GameScreen>();
+        List<GameScreen> screensToUpdate = new List<GameScreen>();
 
         InputState input = new InputState();
 
@@ -140,7 +140,7 @@ namespace GameStateManagement
             //                        Game.Window.ClientBounds.Height);
 
             // Tell each of the screens to load their content.
-            foreach (GameScreen1 screen in screens)
+            foreach (GameScreen screen in screens)
             {
                 screen.LoadContent();
             }
@@ -153,7 +153,7 @@ namespace GameStateManagement
         protected override void UnloadContent()
         {
             // Tell each of the screens to unload their content.
-            foreach (GameScreen1 screen in screens)
+            foreach (GameScreen screen in screens)
             {
                 screen.UnloadContent();
             }
@@ -179,7 +179,7 @@ namespace GameStateManagement
             // the process of updating one screen adds or removes others.
             screensToUpdate.Clear();
 
-            foreach (GameScreen1 screen in screens)
+            foreach (GameScreen screen in screens)
                 screensToUpdate.Add(screen);
 
             bool otherScreenHasFocus = !Game.IsActive;
@@ -189,7 +189,7 @@ namespace GameStateManagement
             while (screensToUpdate.Count > 0)
             {
                 // Pop the topmost screen off the waiting list.
-                GameScreen1 screen = screensToUpdate[screensToUpdate.Count - 1];
+                GameScreen screen = screensToUpdate[screensToUpdate.Count - 1];
 
                 screensToUpdate.RemoveAt(screensToUpdate.Count - 1);
 
@@ -238,7 +238,7 @@ namespace GameStateManagement
         {
             List<string> screenNames = new List<string>();
 
-            foreach (GameScreen1 screen in screens)
+            foreach (GameScreen screen in screens)
                 screenNames.Add(screen.GetType().Name);
 
             Debug.WriteLine(string.Join(", ", screenNames.ToArray()));
@@ -254,7 +254,7 @@ namespace GameStateManagement
 
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            foreach (GameScreen1 screen in screens)
+            foreach (GameScreen screen in screens)
             {
                 if (screen.ScreenState == ScreenState.Hidden)
                     continue;
@@ -277,7 +277,7 @@ namespace GameStateManagement
         /// <summary>
         /// Adds a new screen to the screen manager.
         /// </summary>
-        public void AddScreen(GameScreen1 screen, PlayerIndex? controllingPlayer)
+        public void AddScreen(GameScreen screen, PlayerIndex? controllingPlayer)
         {
             screen.ControllingPlayer = controllingPlayer;
             screen.ScreenManager = this;
@@ -302,7 +302,7 @@ namespace GameStateManagement
         /// the screen can gradually transition off rather than just being
         /// instantly removed.
         /// </summary>
-        public void RemoveScreen(GameScreen1 screen)
+        public void RemoveScreen(GameScreen screen)
         {
             // If we have a graphics device, tell the screen to unload content.
             if (isInitialized)
@@ -327,7 +327,7 @@ namespace GameStateManagement
         /// than the real master list, because screens should only ever be added
         /// or removed using the AddScreen and RemoveScreen methods.
         /// </summary>
-        public GameScreen1[] GetScreens()
+        public GameScreen[] GetScreens()
         {
             return screens.ToArray();
         }

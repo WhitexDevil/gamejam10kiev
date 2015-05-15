@@ -11,19 +11,42 @@ using Microsoft.Xna.Framework.Input;
 
 namespace GoblinsGame
 {
-    class GameplayScreen2 : GameScreen1
+    class GameplayScreenMap : GameScreen
     {
         // Texture Members
         Texture2D foregroundTexture;
-        
+        Texture2D cloud1Texture;
+        Texture2D cloud2Texture;
+        Texture2D mountainTexture;
+        Texture2D skyTexture;
+        Texture2D hudBackgroundTexture;
+        Texture2D ammoTypeNormalTexture;
+        Texture2D ammoTypeSplitTexture;
+        Texture2D windArrowTexture;
+        Texture2D defeatTexture;
+        Texture2D victoryTexture;
+        Texture2D blankTexture;
         SpriteFont hudFont;
-
+        List<Ground> grounds;  
         // Rendering members
         Vector2 cloud1Position;
-       
+        Vector2 cloud2Position;
+
+        Vector2 playerOneHUDPosition;
+        Vector2 playerTwoHUDPosition;
+        Vector2 windArrowPosition;
+        Vector2 playerOneHealthBarPosition;
+        Vector2 playerTwoHealthBarPosition;
+        Vector2 healthBarFullSize;
 
         // Gameplay members
-        
+        Human playerOne;
+        Player playerTwo;
+        Vector2 wind;
+        bool changeTurn;
+        bool isFirstPlayerTurn;
+        bool isTwoHumanPlayers;
+        bool gameOver;
         Random random;
         const int minWind = 0;
         const int maxWind = 10;
@@ -31,31 +54,132 @@ namespace GoblinsGame
         // Helper members
         bool isDragging;
 
+        public object File { get; private set; }
 
         public void LoadAssets()
         {
             // Load textures
             foregroundTexture =
                 Load<Texture2D>("Textures/Backgrounds/gameplay_screen");
-          
+            cloud1Texture = Load<Texture2D>("Textures/Backgrounds/cloud1");
+            cloud2Texture = Load<Texture2D>("Textures/Backgrounds/cloud2");
+            mountainTexture = Load<Texture2D>("Textures/Backgrounds/mountain");
+            skyTexture = Load<Texture2D>("Textures/Backgrounds/sky");
+            defeatTexture = Load<Texture2D>("Textures/Backgrounds/defeat");
+            victoryTexture = Load<Texture2D>("Textures/Backgrounds/victory");
+            hudBackgroundTexture = Load<Texture2D>("Textures/HUD/hudBackground");
+            windArrowTexture = Load<Texture2D>("Textures/HUD/windArrow");
+            ammoTypeNormalTexture = Load<Texture2D>("Textures/HUD/ammoTypeNormal");
+            ammoTypeSplitTexture = Load<Texture2D>("Textures/HUD/ammoTypeSplit");
+            blankTexture = Load<Texture2D>("Textures/Backgrounds/blank");
 
             // Load font
             hudFont = Load<SpriteFont>("Fonts/HUDFont");
 
-            
+            // Define initial cloud position
+            cloud1Position = new Vector2(224 - cloud1Texture.Width, 32);
+            cloud2Position = new Vector2(64, 90);
 
             // TODO: Define intial HUD positions and Initialize human & AI players
-           
-            
+            // Define initial HUD positions
+            playerOneHUDPosition = new Vector2(7, 7);
+            playerTwoHUDPosition = new Vector2(613, 7);
+            windArrowPosition = new Vector2(345, 46);
+            Vector2 healthBarOffset = new Vector2(25, 82);
+            playerOneHealthBarPosition = playerOneHUDPosition + healthBarOffset;
+            playerTwoHealthBarPosition = playerTwoHUDPosition + healthBarOffset;
+            healthBarFullSize = new Vector2(130, 20);
+
+            // Initialize human & AI players
+            playerOne = new Human(ScreenManager.Game, ScreenManager.SpriteBatch,
+                PlayerSide.Left);
+            playerOne.Initialize();
+            playerOne.Name = "Player" + (isTwoHumanPlayers ? " 1" : "");
+
+            if (isTwoHumanPlayers)
+            {
+                playerTwo = new Human(ScreenManager.Game, ScreenManager.SpriteBatch,
+                    PlayerSide.Right);
+                playerTwo.Initialize();
+                playerTwo.Name = "Player 2";
+            }
+            else
+            {
+                playerTwo = new AI(ScreenManager.Game, ScreenManager.SpriteBatch);
+                playerTwo.Initialize();
+                playerTwo.Name = "AI";
+            }
 
 
+            // TODO: Add enemies
+            playerOne.Enemy = playerTwo;
+            playerTwo.Enemy = playerOne;
 
         }
+
+        void CreateLevel()
+        {
+            blocks = new List<Block>();
+            string[] lines = File.ReadAllLines("content/Levels/level" + currentLevel + ".txt");
+            //levelMap = new byte[lines[0].Length, lines.Length];
+
+            blockLength = (int)(Math.Round((double)Height / 27, 0));
+            levelLength = blockLength * lines[0].Length;
+            //Kotygoroshko.drawRectangle = new Rectangle(100, 300, 70, 70);
+            int x = 0;
+            int y = 0;
+
+            backList = new List<Rectangle>();
+            int backX = 0;
+            Rectangle backRect = new Rectangle(0, 0, backgroundTexture.Width, Height);
+            while (backX < levelLength)
+            {
+                backRect = new Rectangle(backX, 0, backgroundTexture.Width, Height);
+                backList.Add(backRect);
+                backX += backgroundTexture.Width;
+            }
+            //int i = 0;
+            //int j = 0;
+            foreach (string line in lines)
+            {
+                foreach (char c in line)
+                {
+                    Rectangle rect = new Rectangle(x, y, blockLength, blockLength);
+                    //levelMap[i,j] = 0;
+                    if (c == '1')
+                    {
+                        Block block = new Block(rect, blockGround1, this);
+                        blocks.Add(block);
+                        //levelMap[i,j] = 1;
+                    }
+                    if (c == '2')
+                    {
+                        Block block = new Block(rect, blockGround2, this);
+                        blocks.Add(block);
+                        //levelMap[i, j] = 1;
+                    }
+                    if (c == '3')
+                    {
+                        Block block = new Block(rect, blockGround3, this);
+                        blocks.Add(block);
+                        //levelMap[i, j] = 1;
+                    }
+                    
+                    x += blockLength;
+                    //i++;
+                }
+                //j++;
+                //i = 0;
+                x = 0;
+                y += blockLength;
+            }
+
 
         public override void LoadContent()
         {
             LoadAssets();
             // TODO: Start the game
+            
             Start();
 
             base.LoadContent();
@@ -257,7 +381,7 @@ namespace GoblinsGame
                 playerTwo.Draw(gameTime);
         }
 
-        public GameplayScreen2(bool twoHumans)
+        public GameplayScreenMap(bool twoHumans)
         {
             EnabledGestures = GestureType.FreeDrag |
                 GestureType.DragComplete |
