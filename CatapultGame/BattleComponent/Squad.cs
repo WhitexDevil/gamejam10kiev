@@ -133,8 +133,6 @@ namespace CatapultGame
                         if (!attaking)
                             CurrentAction = new Action() { Type = ActionType.Move ,Path = CurrentAction.Path};
                         break;
-
-                        break;
                     case ActionType.TakingDamage:
                         if (!takingDMG) CurrentAction = new Action() { Type = ActionType.None };
                         break;
