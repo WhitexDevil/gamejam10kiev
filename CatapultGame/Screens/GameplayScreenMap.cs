@@ -381,7 +381,7 @@ namespace GoblinsGame
                 playerTwo.Draw(gameTime);
         }
 
-        public GameplayScreen1(bool twoHumans)
+        public GameplayScreenMap(bool twoHumans)
         {
             EnabledGestures = GestureType.FreeDrag |
                 GestureType.DragComplete |
