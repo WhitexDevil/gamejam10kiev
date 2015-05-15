@@ -120,6 +120,7 @@ namespace GoblinsGame
         {
             LoadAssets();
             // TODO: Start the game
+            
             Start();
 
             base.LoadContent();
