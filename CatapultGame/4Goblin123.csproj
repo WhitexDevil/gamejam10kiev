@@ -183,6 +183,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\grass.png" />
+    <Content Include="Content\hero.png" />
     <Content Include="Content\mount.png" />
     <Content Include="Content\water.png" />
     <Content Include="Properties\Default.rd.xml" />
