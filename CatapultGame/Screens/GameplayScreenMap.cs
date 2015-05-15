@@ -170,7 +170,10 @@ namespace GoblinsGame
             CreateLevel();
             base.LoadContent();
         }
-
+        public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
+        {
+            base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
+        }
         public override void Draw(GameTime gameTime)
         {
             float elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -201,6 +204,8 @@ namespace GoblinsGame
             ScreenManager.SpriteBatch.End();
         }
 
+
+
         //private void DrawBackground()
         //{
         //    // Clear the background
@@ -228,7 +233,7 @@ namespace GoblinsGame
 
         //void Start()
         //{
-        //    // Set initial wind direction
+        //    // Set initialf wind direction
         //    wind = Vector2.Zero;
         //    isFirstPlayerTurn = false;
         //    changeTurn = true;
