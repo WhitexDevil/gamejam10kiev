@@ -20,6 +20,8 @@ namespace CatapultGame
         private int MapSize;
         private BattleData CurrentBattleData;
 
+
+
         public BattleData BattleData
         {
             get { return CurrentBattleData; }
