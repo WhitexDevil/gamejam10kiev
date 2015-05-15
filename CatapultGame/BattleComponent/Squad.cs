@@ -14,6 +14,19 @@ namespace CatapultGame
         private int amount;
         public int DamageLeft;
         private Point position;
+
+        public enum ActionType { None, Move, Attack, MoveAndAttack, AttackAndMove, TakingDamage }
+
+        public struct Action
+        {
+            public Squad Target;
+            public Point[] Path;
+            public int Damage;
+            public ActionType Type;
+        }
+
+        public Action CurrentAction;
+
         private bool alive;
 
         public bool Alive
