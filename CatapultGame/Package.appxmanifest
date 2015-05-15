@@ -7,11 +7,11 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="52973edb-82e2-4fd3-8464-70e7ddee367d"
+    Name="52973edb-82e2-4fd3-8464-70e7ddee360d"
     Publisher="CN=markm"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="52973edb-82e2-4fd3-8464-70e7ddee367d" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="52973edb-82e2-4fd3-8464-70e7ddee360d" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>CatapultGame</DisplayName>
