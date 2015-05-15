@@ -36,8 +36,8 @@ namespace GoblinsGame
 
         List<List<Ground>> map = new List<List<Ground>>();
         Rectangle rect;
-        int levelLength = 4;
-        int blockLength = 100;
+        int levelLength = 128;
+        int blockLength = 50;
         //SpriteFont hudFont;
         //List<Ground> grounds;  
 
@@ -165,7 +165,7 @@ namespace GoblinsGame
             grassTexture = Load<Texture2D>("grass");
             mountTexture = Load<Texture2D>("mount");
             waterTexture = Load<Texture2D>("water");
-            Rectangle rect = new Rectangle(0, 0, blockLength, blockLength);
+            rect = new Rectangle(0, 0, blockLength, blockLength);
 
             CreateLevel();
             base.LoadContent();
