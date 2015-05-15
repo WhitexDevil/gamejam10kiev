@@ -22,7 +22,7 @@ namespace GameStateManagement
     /// Base class for screens that contain a menu of options. The user can
     /// move up and down to select an entry, or cancel to back out of the screen.
     /// </summary>
-    abstract class MenuScreen : GameScreen1
+    abstract class MenuScreen : GameScreen
     {
         #region Fields
 

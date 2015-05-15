@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace GoblinsGame
 {
-    class GameplayScreen1 : GameScreen1
+    class GameplayScreenMap : GameScreen
     {
         // Texture Members
         Texture2D foregroundTexture;
