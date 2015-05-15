@@ -32,6 +32,9 @@ namespace GoblinsGame
         Texture2D grassTexture;
         Texture2D waterTexture;
         Texture2D mountTexture;
+        Rectangle rect;
+        int levelLength = 128;
+        int blockLength = 100;
         //SpriteFont hudFont;
         //List<Ground> grounds;  
 
@@ -131,7 +134,6 @@ namespace GoblinsGame
             grounds[0] = new Ground(grassTexture, 0);
             grounds[1] = new Ground(waterTexture, 1);
             grounds[2] = new Ground(mountTexture, 2);
-            int levelLength = 128;
             List<List<Ground>> lines = new List<List<Ground>>();
             Random rand = new Random();
             for(int i=0; i<levelLength; i++)
@@ -149,9 +151,9 @@ namespace GoblinsGame
         {
             //LoadAssets();
             // TODO: Start the game
-            
-            //Start();
 
+            //Start();
+            Rectangle rect = new Rectangle(0, 0, blockLength, blockLength);
             base.LoadContent();
         }
 
@@ -160,7 +162,14 @@ namespace GoblinsGame
             float elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             ScreenManager.SpriteBatch.Begin();
+            
+            for (int i = 0; i < levelLength; i++)
+            {
+                for (int j = 0; j < levelLength; j++)
+                {
 
+                }
+            }
             // Render all parts of the screen
             //DrawBackground();
             //// DrawComputer(gameTime);
