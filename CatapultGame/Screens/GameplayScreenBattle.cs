@@ -15,15 +15,15 @@ namespace GoblinsGame
     {
         // Texture Members
         Texture2D foregroundTexture;
-        
+
         SpriteFont hudFont;
 
         // Rendering members
         Vector2 cloud1Position;
-       
+
 
         // Gameplay members
-        
+
         Random random;
         const int minWind = 0;
         const int maxWind = 10;
@@ -37,16 +37,16 @@ namespace GoblinsGame
             // Load textures
             foregroundTexture =
                 Load<Texture2D>("Textures/Backgrounds/gameplay_screen");
-          
+
 
             // Load font
             hudFont = Load<SpriteFont>("Fonts/HUDFont");
 
-            
+
 
             // TODO: Define intial HUD positions and Initialize human & AI players
-           
-            
+
+
 
 
 
@@ -71,9 +71,9 @@ namespace GoblinsGame
             DrawBackground();
             // DrawComputer(gameTime);
             // TODO: Draw players
-            DrawPlayerTwo(gameTime);
-            DrawPlayerOne(gameTime);
-            
+            DrawPlayer(gameTime);
+            DrawEnemy(gameTime);
+
             DrawHud();
 
             ScreenManager.SpriteBatch.End();
@@ -85,7 +85,7 @@ namespace GoblinsGame
             ScreenManager.Game.GraphicsDevice.Clear(Color.White);
 
             // Draw the Sky
-       
+
             // Draw the Castle, trees, and foreground 
             ScreenManager.SpriteBatch.Draw(foregroundTexture,
                 Vector2.Zero, Color.White);
@@ -94,7 +94,7 @@ namespace GoblinsGame
         void Start()
         {
             // Set initial wind direction
-          
+
         }
 
         // A simple helper to draw shadowed text.
@@ -123,32 +123,23 @@ namespace GoblinsGame
         void DrawHud()
         {
             // Draw Player Hud
-           
 
-         
+
+
 
 
         }
 
-        /// <summary>
-        /// Returns the texture appropriate for the player's current weapon
-        /// </summary>
-        /// <param name="player">The player for which to get the texture</param>
-        /// <returns>Ammo texture to draw in the HUD</returns>
-        private Texture2D GetWeaponTexture(Player player)
-        {
-           
-        }
 
-        void DrawPlayerOne(GameTime gameTime)
+        void DrawEnemy(GameTime gameTime)
         {
         }
 
-        void DrawPlayerTwo(GameTime gameTime)
+        void DrawPlayer(GameTime gameTime)
         {
         }
 
-        public GameplayScreenBattle(bool twoHumans)
+        public GameplayScreenBattle()
         {
             EnabledGestures = GestureType.FreeDrag |
                 GestureType.DragComplete |
@@ -156,7 +147,7 @@ namespace GoblinsGame
 
             random = new Random();
 
-         
+
         }
 
         /// <summary>
@@ -167,12 +158,12 @@ namespace GoblinsGame
         {
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-         
+
 
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }
 
-      
+
 
         /// <summary>
         /// Input helper method provided by GameScreen.  Packages up the various /// input values for ease of use.
@@ -232,58 +223,7 @@ namespace GoblinsGame
                 return;
             }
 
-            if (input.IsPauseGame())
-            {
-                PauseCurrentGame();
-            }
-         
 
-                if (input.Gestures.Count > 0)
-                {
-                    // Read all available gestures
-                    foreach (GestureSample gestureSample in input.Gestures)
-                    {
-                        if (gestureSample.GestureType == GestureType.FreeDrag)
-                            isDragging = true;
-                        else if (gestureSample.GestureType
-                                 == GestureType.DragComplete)
-                            isDragging = false;
-
-                        playerOne.HandleInput(gestureSample);
-                    }
-                }
-            }
-            else if (isTwoHumanPlayers && !isFirstPlayerTurn &&
-                (playerTwo.Catapult.CurrentState == CatapultState.Idle ||
-                    playerTwo.Catapult.CurrentState == CatapultState.Aiming))
-            {
-                //Read keyboard input
-                (playerTwo as Human)
-                    .HandleKeybordInput(input.CurrentKeyboardState);
-
-                //Read gamepad input
-                (playerTwo as Human)
-                    .HandleGamePadInput(input.CurrentGamePadState);
-
-                //Read mouse input
-                (playerTwo as Human).HandleMouseInput(input.CurrentMouseState,
-                                                      input.LastMouseState);
-
-                if (input.Gestures.Count > 0)
-                {
-                    // Read all available gestures
-                    foreach (GestureSample gestureSample in input.Gestures)
-                    {
-                        if (gestureSample.GestureType == GestureType.FreeDrag)
-                            isDragging = true;
-                        else if (gestureSample.GestureType
-                                 == GestureType.DragComplete)
-                            isDragging = false;
-
-                        (playerTwo as Human).HandleInput(gestureSample);
-                    }
-                }
-            }
         }
 
         private void FinishCurrentGame()
@@ -295,6 +235,9 @@ namespace GoblinsGame
         {
             // TODO: Pause the game
         }
-
     }
 }
+
+       
+
+    
