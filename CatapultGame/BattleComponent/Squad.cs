@@ -22,6 +22,17 @@ namespace CatapultGame
             private set { alive = value; }
         }
 
+        public void Draw(GameTime gameTime)
+        {
+
+        }
+        public void Update(GameTime gameTime)
+        {
+
+        }
+
+
+
         public int Amount
         {
             get { return amount; }
@@ -74,10 +85,7 @@ namespace CatapultGame
 
 
         }
-        /// <summary>
-        /// Deep clone!
-        /// </summary>
-        /// <returns></returns>
+     
         public object Clone()
         {
             return new Squad(Unit) { DamageLeft = 0, Amount = amount, Position = position };
