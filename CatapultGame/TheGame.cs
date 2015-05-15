@@ -12,7 +12,7 @@ namespace GoblinsGame
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
+        //sdfsdfs
         ScreenManager screenManager;
 
         public TheGame()
