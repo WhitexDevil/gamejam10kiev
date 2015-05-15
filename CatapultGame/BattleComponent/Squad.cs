@@ -32,6 +32,8 @@ namespace CatapultGame
         public Action CurrentAction;
 
         private bool alive;
+        private bool takingDMG=false;
+        private bool attaking=false;
 
         public bool Alive
         {
@@ -52,8 +54,7 @@ namespace CatapultGame
                     case ActionType.Move:
                         break;
                     case ActionType.Attack:
-
-                        CurrentAction = new Action() { Type = ActionType.None };
+                        attaking = false;
                         break;
                     case ActionType.MoveAndAttack:
                         break;
@@ -61,8 +62,8 @@ namespace CatapultGame
                         break;
                     case ActionType.TakingDamage:
 
-
-                        CurrentAction = new Action() { Type = ActionType.None };
+                        takingDMG = false;
+                        //CurrentAction = new Action() { Type = ActionType.None };
 
                         break;
                     default:
@@ -101,13 +102,41 @@ namespace CatapultGame
                         if (CurrentAction.Target.CurrentAction.Type!=ActionType.TakingDamage)
                         Attack(CurrentAction.Target);
                         
+                        if(!attaking)
+                            CurrentAction = new Action() { Type = ActionType.None };
                         break;
                     case ActionType.MoveAndAttack:
+                        if (start == 999)
+                        {
+                            start = CurrentAction.Path.Length - 1;
+                        }
+                        Point b1 = CurrentAction.Path[start - 1];
+                        Point a1 = position;//CurrentAction.Path[start];
+                        Vector2 delta1 = new Vector2(b1.X - a1.X, b1.Y - a1.Y);
+                        Vector2.Normalize(delta1);
+                        position = new Point(position.X + (int)delta1.X, position.Y + (int)delta1.Y);
+                        if (position == CurrentAction.Path[start - 1])
+                        {
+                            start--;
+                        }
+                        if (start <= 0)
+                        {
+                            CurrentAction = new Action() { Type = ActionType.Attack, Target = CurrentAction.Target };
+                            start = 999;
+                        }
 
                         break;
                     case ActionType.AttackAndMove:
+                        if (CurrentAction.Target.CurrentAction.Type != ActionType.TakingDamage)
+                            Attack(CurrentAction.Target);
+
+                        if (!attaking)
+                            CurrentAction = new Action() { Type = ActionType.Move ,Path = CurrentAction.Path};
+                        break;
+
                         break;
                     case ActionType.TakingDamage:
+                        if (!takingDMG) CurrentAction = new Action() { Type = ActionType.None };
                         break;
                     default:
                         break;
@@ -152,6 +181,7 @@ namespace CatapultGame
 
         public void Attack(Squad target)
         {
+            attaking = true;
             int Damage = 0;
             for (int i = 0; i < Amount; i++)
             {
@@ -164,6 +194,7 @@ namespace CatapultGame
 
         public void TakeDamage(int damage)
         {
+            takingDMG = true;
             CurrentAction = new Action() {Type = ActionType.TakingDamage,Damage =damage  };
             damage += DamageLeft;
             Amount -= (damage / Unit.MaxHitpoints);
