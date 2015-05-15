@@ -32,8 +32,11 @@ namespace GoblinsGame
         Texture2D grassTexture;
         Texture2D waterTexture;
         Texture2D mountTexture;
+        Ground[] grounds = new Ground[3];
+
+        List<List<Ground>> map = new List<List<Ground>>();
         Rectangle rect;
-        int levelLength = 128;
+        int levelLength = 4;
         int blockLength = 100;
         //SpriteFont hudFont;
         //List<Ground> grounds;  
@@ -128,22 +131,28 @@ namespace GoblinsGame
 
         //}
 
+
+        public GameplayScreenMap()
+        {
+        }
         void CreateLevel()
         {
-            Ground[] grounds = new Ground[3];
             grounds[0] = new Ground(grassTexture, 0);
             grounds[1] = new Ground(waterTexture, 1);
             grounds[2] = new Ground(mountTexture, 2);
-            List<List<Ground>> lines = new List<List<Ground>>();
             Random rand = new Random();
             for(int i=0; i<levelLength; i++)
             {
-                lines.Add(new List<Ground>());
+                map.Add(new List<Ground>());
+                for (int j = 0; j < levelLength; j++)
+                {
+                    map[i].Add(grounds[rand.Next(3)]);
+                }
             }
-            for(int i = 0; i< levelLength; i++)
-            {
-                lines[i].Add(grounds[rand.Next(3)]);
-            }
+            //for(int i = 0; i< levelLength; i++)
+            //{
+            //    map[i].Add(grounds[rand.Next(3)]);
+            //}
         }
 
 
@@ -153,22 +162,34 @@ namespace GoblinsGame
             // TODO: Start the game
 
             //Start();
+            grassTexture = Load<Texture2D>("grass");
+            mountTexture = Load<Texture2D>("mount");
+            waterTexture = Load<Texture2D>("water");
             Rectangle rect = new Rectangle(0, 0, blockLength, blockLength);
+
+            CreateLevel();
             base.LoadContent();
         }
-
+        public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
+        {
+            base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
+        }
         public override void Draw(GameTime gameTime)
         {
             float elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             ScreenManager.SpriteBatch.Begin();
-            
+            int x = 0, y = 0;
             for (int i = 0; i < levelLength; i++)
-            {
+            {             
                 for (int j = 0; j < levelLength; j++)
                 {
-
+                    x = j * blockLength;
+                    rect.Location = new Point(x, y);
+                    ScreenManager.SpriteBatch.Draw(map[i][j].Texture, rect, Color.White);
                 }
+                x = 0;
+                y = i * blockLength;
             }
             // Render all parts of the screen
             //DrawBackground();
@@ -182,6 +203,8 @@ namespace GoblinsGame
 
             ScreenManager.SpriteBatch.End();
         }
+
+
 
         //private void DrawBackground()
         //{
@@ -210,7 +233,7 @@ namespace GoblinsGame
 
         //void Start()
         //{
-        //    // Set initial wind direction
+        //    // Set initialf wind direction
         //    wind = Vector2.Zero;
         //    isFirstPlayerTurn = false;
         //    changeTurn = true;

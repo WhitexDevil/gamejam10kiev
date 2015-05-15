@@ -19,9 +19,6 @@ namespace CatapultGame.Players
             currentPosition.Y = y;
         }
 
-        public Hero() : this(0,0) { }
-        
-
-
+        public Hero() : this(0,0) { } 
     }
 }
