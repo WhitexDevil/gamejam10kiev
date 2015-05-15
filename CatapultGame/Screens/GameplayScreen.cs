@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace GoblinsGame
 {
-    class GameplayScreen : GameScreen1
+    class GameplayScreen1 : GameScreen1
     {
         // Texture Members
         Texture2D foregroundTexture;
@@ -322,7 +322,7 @@ namespace GoblinsGame
                 playerTwo.Draw(gameTime);
         }
 
-        public GameplayScreen(bool twoHumans)
+        public GameplayScreen1(bool twoHumans)
         {
             EnabledGestures = GestureType.FreeDrag |
                 GestureType.DragComplete |

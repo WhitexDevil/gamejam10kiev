@@ -12,7 +12,7 @@ namespace GoblinsGame
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        //sdfsdfs
+
         ScreenManager screenManager;
 
         public TheGame()
@@ -46,7 +46,7 @@ namespace GoblinsGame
             Components.Add(screenManager);
 
             // TODO: Add gameplay screen
-            screenManager.AddScreen(new GameplayScreen(false), null);
+            screenManager.AddScreen(new GameplayScreen1(false), null);
 
             // TODO: Add additional screens
             // TODO: Add audio manager
