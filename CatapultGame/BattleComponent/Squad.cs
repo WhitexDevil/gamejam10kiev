@@ -14,6 +14,19 @@ namespace CatapultGame
         private int amount;
         public int DamageLeft;
         private Point position;
+
+        public enum ActionType { None, Move, Attack, MoveAndAttack, AttackAndMove, TakingDamage }
+
+        public struct Action
+        {
+            public Squad Target;
+            public Point[] Path;
+            public int Damage;
+            public ActionType Type;
+        }
+
+        public Action CurrentAction;
+
         private bool alive;
 
         public bool Alive
@@ -24,6 +37,24 @@ namespace CatapultGame
 
         public void Draw(GameTime gameTime)
         {
+            switch (CurrentAction.Type)
+            {
+                case ActionType.None:
+                    break;
+                case ActionType.Move:
+                    break;
+                case ActionType.Attack:
+                    break;
+                case ActionType.MoveAndAttack:
+                    break;
+                case ActionType.AttackAndMove:
+                    break;
+                case ActionType.TakingDamage:
+                    break;
+                default:
+                    break;
+            }
+
 
         }
         public void Update(GameTime gameTime)

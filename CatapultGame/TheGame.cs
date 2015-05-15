@@ -12,6 +12,7 @@ namespace GoblinsGame
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        GameplayScreenMap screen;
 
         ScreenManager screenManager;
 
@@ -46,10 +47,11 @@ namespace GoblinsGame
             Components.Add(screenManager);
 
             // TODO: Add gameplay screen
-            screenManager.AddScreen(new GameplayScreenBattle(), null);
-            
+            screenManager.AddScreen(new GameplayScreenMap(), null);
+
             // TODO: Add additional screens
             // TODO: Add audio manager
+            //screen = new GameplayScreenMap();
         }
 
 
@@ -73,6 +75,8 @@ namespace GoblinsGame
         protected override void LoadContent()
         {
             // TODO: Load sounds
+            ///screen.LoadContent();
+            
             base.LoadContent();
         }
 
@@ -105,7 +109,6 @@ namespace GoblinsGame
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
