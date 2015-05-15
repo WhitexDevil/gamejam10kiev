@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace CatapultGame
 {
-    using Maneuver = Action<BattleData>;
+    using Maneuver = Action<BattleData, Squad>;
 
     class SandBox
     {
@@ -109,35 +109,35 @@ namespace CatapultGame
         Squad CurrentSquad = null;
         public void Update(GameTime gameTime)
         {
-            //if (CurrentSquad == null || CurrentSquad.Action 
+            if (CurrentSquad == null || CurrentSquad.Action 
 
-            //for (int i = 0; i < BattleData.AllyArmy.Length; i++)
-            //    BattleData.AllyArmy.Update(gameTime);
-            //for (int i = 0; i < BattleData.EnemyArmy.Length; i++)
-            //    BattleData.EnemyArmy.Update(gameTime);
+            for (int i = 0; i < BattleData.AllyArmy.Length; i++)
+                BattleData.AllyArmy.Update(gameTime);
+            for (int i = 0; i < BattleData.EnemyArmy.Length; i++)
+                BattleData.EnemyArmy.Update(gameTime);
 
-            //if (AIturn)
-            //{
-            //    for (int i = 0; i < BattleData.AllyArmy.Length; i++)
-            //        BattleData.AllyArmy.Update(gameTime);
-            //    for (int i = 0; i < BattleData.EnemyArmy.Length; i++)
-            //        BattleData.EnemyArmy.Update(gameTime);
+            if (AIturn)
+            {
+                for (int i = 0; i < BattleData.AllyArmy.Length; i++)
+                    BattleData.AllyArmy.Update(gameTime);
+                for (int i = 0; i < BattleData.EnemyArmy.Length; i++)
+                    BattleData.EnemyArmy.Update(gameTime);
 
 
 
-            //    if (curent==null)
-            //    {
-            //        int NewForceBalance = EvaluateForces();
-            //        int DeltaBalance = ForceBalance - NewForceBalance;
-            //        ForceBalance = NewForceBalance;
-            //     = Side1.NextTurn(DeltaBalance);
-            //        CurrentBattleData.Reverse = !CurrentBattleData.Reverse;
-            //    }
-            //}
-            //else
-            //{
+                if (curent==null)
+                {
+                    int NewForceBalance = EvaluateForces();
+                    int DeltaBalance = ForceBalance - NewForceBalance;
+                    ForceBalance = NewForceBalance;
+                 = Side1.NextTurn(DeltaBalance);
+                    CurrentBattleData.Reverse = !CurrentBattleData.Reverse;
+                }
+            }
+            else
+            {
 
-            //}
+            }
         }
 
         public void Draw(GameTime gameTime)
