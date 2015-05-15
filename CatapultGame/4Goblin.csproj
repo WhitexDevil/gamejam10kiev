@@ -138,7 +138,14 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BattleComponent\AI.cs" />
+    <Compile Include="BattleComponent\BattleData.cs" />
+    <Compile Include="BattleComponent\Player.cs" />
+    <Compile Include="BattleComponent\SandBox.cs" />
     <Compile Include="BattleComponent\Squad.cs" />
+    <Compile Include="BattleComponent\Strategies\Deffensive.cs" />
+    <Compile Include="BattleComponent\Strategies\Offensive.cs" />
+    <Compile Include="BattleComponent\Strategies\Strategies.cs" />
     <Compile Include="BattleComponent\Unit.cs" />
     <Compile Include="Catapult\Catapult.cs" />
     <Compile Include="Catapult\Projectile.cs" />
@@ -146,6 +153,7 @@
       <DependentUpon>GamePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="PathFinder\AuthorAttribute.cs" />
+    <Compile Include="PathFinder\DistanceAndPath.cs" />
     <Compile Include="PathFinder\IPathFinder.cs" />
     <Compile Include="PathFinder\PathFinderFast.cs" />
     <Compile Include="PathFinder\PriorityQueueB.cs" />

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace CatapultGame.BattleComponent
+namespace CatapultGame
 {
     public class Obstacle : Unit { }
 
