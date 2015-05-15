@@ -15,8 +15,18 @@ namespace CatapultGame.Screens
 
         public Ground(Texture2D texture, int pass)
         {
-            this.texture = texture;
-            this.pass = pass;
+            Texture = texture;
+            Pass = pass;
+        }
+        public Texture2D Texture
+        {
+            get { return texture; }
+            set { texture = value; }
+        }
+        public int Pass
+        {
+            get { return pass; }
+            set { pass = value; }
         }
     }
 }

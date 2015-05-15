@@ -17,7 +17,7 @@ namespace CatapultGame
 
         private static System.Random GetRandom()
         {
-            int cId =1 //System.Threading.Thread.CurrentThread.ManagedThreadId;
+            int cId = 1; //System.Threading.Thread.CurrentThread.ManagedThreadId;
             if (cId < Randoms.Count) return Randoms[cId];
             lock (Randoms)
             {

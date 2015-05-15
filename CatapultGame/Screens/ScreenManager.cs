@@ -264,7 +264,7 @@ namespace GameStateManagement
 
 			// TODO: Use scaler draw
 			
-            base.Draw(gameTime);
+            //base.Draw(gameTime);
 
         }
 
