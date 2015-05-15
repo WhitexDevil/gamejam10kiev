@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace CatapultGame
 {
-    using Maneuver = Action<BattleData>;
+    using Maneuver = Action<BattleData, Squad>;
 
     class SandBox
     {

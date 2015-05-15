@@ -11,45 +11,39 @@ namespace CatapultGame
     using Step = KeyValuePair<Point, float>;
     public class Offensive : Strategy
     {
-        static void Surround(BattleData battleData)
+        static void Surround(BattleData battleData, Squad current)
         {
             if (battleData.EnemyArmy.Length < 1)
                 return;
 
-            for (int i = 0; i < battleData.AllyArmy.Length; i++)
-            {
                 int TargetIndex = Strategy.NearestToAll(battleData.AllyArmy, battleData.EnemyArmy);
                 if (TargetIndex < 0)
                     return;
                 Step[] Path = DistanceAndPath.PathTo(
                     battleData,
-                    battleData.AllyArmy[i].Position,
+                    current.Position,
                     battleData.EnemyArmy[TargetIndex].Position,
-                    battleData.AllyArmy[i].Unit.Range);
+                    current.Unit.Range);
 
-                Strategy.MoveAndAttack(battleData.AllyArmy[i], battleData.EnemyArmy[TargetIndex], Path, battleData);
-            }
+                Strategy.MoveAndAttack(current, battleData.EnemyArmy[TargetIndex], Path, battleData);       
 
         }
-        static void Rush(BattleData battleData)
+        static void Rush(BattleData battleData, Squad current)
         {
             if (battleData.EnemyArmy.Length < 1)
                 return;
-            for (int i = 0; i < battleData.AllyArmy.Length; i++)
-            {
-                int TargetIndex = Strategy.NearestToPoint(battleData.AllyArmy[i].Position, battleData.EnemyArmy);
+
+            int TargetIndex = Strategy.NearestToPoint(current.Position, battleData.EnemyArmy);
                 if (TargetIndex < 0)
                     return;
                 Step[] Path = DistanceAndPath.PathTo(
                     battleData,
-                    battleData.AllyArmy[i].Position,
+                    current.Position,
                     battleData.EnemyArmy[TargetIndex].Position,
-                    battleData.AllyArmy[i].Unit.Range);
+                    current.Unit.Range);
 
-                Strategy.MoveAndAttack(battleData.AllyArmy[i], battleData.EnemyArmy[TargetIndex], Path, battleData);
+                Strategy.MoveAndAttack(current, battleData.EnemyArmy[TargetIndex], Path, battleData);
 
-
-            }
         }
         public Offensive()
         {

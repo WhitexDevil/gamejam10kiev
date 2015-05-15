@@ -8,69 +8,67 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace CatapultGame
 {
-   
 
-  
-        using Step = KeyValuePair<Point, float>;
-        public class Deffensive : Strategy
+
+
+    using Step = KeyValuePair<Point, float>;
+    public class Deffensive : Strategy
+    {
+        static void Ambysh(BattleData battleData, Squad current)
         {
-            static void Ambysh(BattleData battleData)
-            {
-                if (battleData.EnemyArmy.Length < 1)
+            if (battleData.EnemyArmy.Length < 1)
+                return;
+
+                int TargetIndex = Strategy.NearestToPoint(current.Position, battleData.EnemyArmy);
+                if (TargetIndex < 0)
                     return;
-                for (int i = 0; i < battleData.AllyArmy.Length; i++)
+                Step[] Path = DistanceAndPath.PathTo(
+                    battleData,
+                    current.Position,
+                    battleData.EnemyArmy[TargetIndex].Position,
+                    current.Unit.Range);
+                if (Path != null)
+                    Strategy.MoveAndAttack(current, battleData.EnemyArmy[TargetIndex], Path, battleData);
+            
+        }
+
+        static void HitAndRun(BattleData battleData, Squad current)
+        {
+            if (battleData.EnemyArmy.Length < 1)
+                return;
+
+            int TargetIndex = Strategy.NearestToPoint(current.Position, battleData.EnemyArmy);
+            if (TargetIndex < 0)
+                return;
+            Step[] Path = DistanceAndPath.PathTo(
+                battleData,
+                current.Position,
+                battleData.EnemyArmy[TargetIndex].Position,
+                current.Unit.Range);
+            if (Path != null)
+                if (Path.Length == 0)
                 {
-                    int TargetIndex = Strategy.NearestToPoint(battleData.AllyArmy[i].Position, battleData.EnemyArmy);
-                    if (TargetIndex < 0)
-                        return;
-                    Step[] Path = DistanceAndPath.PathTo(
-                        battleData,
-                        battleData.AllyArmy[i].Position,
-                        battleData.EnemyArmy[TargetIndex].Position,
-                        battleData.AllyArmy[i].Unit.Range);
-                    if (Path != null)
-                        Strategy.MoveAndAttack(battleData.AllyArmy[i], battleData.EnemyArmy[TargetIndex], Path, battleData);
+                    Point SafePoint = GetSafeFrom(current.Position, battleData.EnemyArmy[TargetIndex].Position);
+
+                    Path = DistanceAndPath.PathTo(
+                    battleData,
+                    current.Position,
+                    SafePoint,
+                    0);
+
+                    Strategy.AttackAndMove(current, battleData.EnemyArmy[TargetIndex], Path, battleData);
                 }
+                else
+                    Strategy.MoveAndAttack(current, battleData.EnemyArmy[TargetIndex], Path, battleData);
 
-            }
-            static void HitAndRun(BattleData battleData)
-            {
-                if (battleData.EnemyArmy.Length < 1)
-                    return;
-                for (int i = 0; i < battleData.AllyArmy.Length; i++)
-                {
-                    int TargetIndex = Strategy.NearestToPoint(battleData.AllyArmy[i].Position, battleData.EnemyArmy);
-                    if (TargetIndex < 0)
-                        return;
-                    Step[] Path = DistanceAndPath.PathTo(
-                        battleData,
-                        battleData.AllyArmy[i].Position,
-                        battleData.EnemyArmy[TargetIndex].Position,
-                        battleData.AllyArmy[i].Unit.Range);
-                    if (Path != null)
-                        if (Path.Length == 0)
-                        {
-                            Point SafePoint = GetSafeFrom(battleData.AllyArmy[i].Position, battleData.EnemyArmy[TargetIndex].Position);
-
-                            Path = DistanceAndPath.PathTo(
-                            battleData,
-                            battleData.AllyArmy[i].Position,
-                            SafePoint,
-                            0);
-
-                            Strategy.AttackAndMove(battleData.AllyArmy[i], battleData.EnemyArmy[TargetIndex], Path, battleData);
-                        }
-                        else
-                            Strategy.MoveAndAttack(battleData.AllyArmy[i], battleData.EnemyArmy[TargetIndex], Path, battleData);
-                }
-            }
+        }
 
 
-            public Deffensive()
-            {
-                Maneuvers[0] = Ambysh;
-                Maneuvers[1] = HitAndRun;
-            }
+        public Deffensive()
+        {
+            Maneuvers[0] = Ambysh;
+            Maneuvers[1] = HitAndRun;
         }
     }
+}
 
