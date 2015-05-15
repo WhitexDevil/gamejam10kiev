@@ -84,17 +84,17 @@ namespace CatapultGame
 
         private void ChooseManeuver()
         {
-            if (ManeuverTrust <= 0)
-            {
-                double R = Random.NextDouble();
-                if (R <= Player.Wairness)
-                    Maneuver = Strategy.Maneuvers[0];
-                else
-                    Maneuver = Strategy.Maneuvers[1];
+            //if (ManeuverTrust <= 0)
+            //{
+            //    double R = Random.NextDouble();
+            //    if (R <= Player.Wairness)
+            //        Maneuver = Strategy.Maneuvers[0];
+            //    else
+            //        Maneuver = Strategy.Maneuvers[1];
 
 
-                ManeuverTrust = 50 * Player.Pride;
-            }
+            //    ManeuverTrust = 50 * Player.Pride;
+            //}
         }
 
         public Maneuver NextTurn(double DeltaBalance)
