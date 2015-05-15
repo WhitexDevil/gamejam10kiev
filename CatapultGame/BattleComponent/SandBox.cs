@@ -25,6 +25,9 @@ namespace CatapultGame
             get { return CurrentBattleData; }
             private set { CurrentBattleData = value; }
         }
+
+        public bool AIturn { get; private set; }
+
         bool Finish;
         bool Win;
         //private BattleData BattleDataSide2;
@@ -100,8 +103,45 @@ namespace CatapultGame
             return sumAlly - sumEnemy;
         }
 
+        Maneuver curent = null;
+        Squad CurrentSquad = null;
+        public void Update(GameTime gameTime)
+        {
+            if (CurrentSquad == null || CurrentSquad.Action 
+
+            for (int i = 0; i < BattleData.AllyArmy.Length; i++)
+                BattleData.AllyArmy.Update(gameTime);
+            for (int i = 0; i < BattleData.EnemyArmy.Length; i++)
+                BattleData.EnemyArmy.Update(gameTime);
+
+            if (AIturn)
+            {
+                for (int i = 0; i < BattleData.AllyArmy.Length; i++)
+                    BattleData.AllyArmy.Update(gameTime);
+                for (int i = 0; i < BattleData.EnemyArmy.Length; i++)
+                    BattleData.EnemyArmy.Update(gameTime);
 
 
+
+                if (curent==null)
+                {
+                    int NewForceBalance = EvaluateForces();
+                    int DeltaBalance = ForceBalance - NewForceBalance;
+                    ForceBalance = NewForceBalance;
+                 = Side1.NextTurn(DeltaBalance);
+                    CurrentBattleData.Reverse = !CurrentBattleData.Reverse;
+                }
+            }
+            else
+            {
+
+            }
+        }
+
+        public void Draw(GameTime gameTime)
+        {
+            
+        }
         public bool Fight()
         {
             int Turns = 0;

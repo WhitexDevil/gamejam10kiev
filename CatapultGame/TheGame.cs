@@ -46,8 +46,8 @@ namespace GoblinsGame
             Components.Add(screenManager);
 
             // TODO: Add gameplay screen
-            //screenManager.AddScreen(new GameplayScreenMap(false), null);
-
+            screenManager.AddScreen(new GameplayScreenBattle(), null);
+            
             // TODO: Add additional screens
             // TODO: Add audio manager
         }
