@@ -138,11 +138,17 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BattleComponent\Squad.cs" />
+    <Compile Include="BattleComponent\Unit.cs" />
     <Compile Include="Catapult\Catapult.cs" />
     <Compile Include="Catapult\Projectile.cs" />
     <Compile Include="GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PathFinder\AuthorAttribute.cs" />
+    <Compile Include="PathFinder\IPathFinder.cs" />
+    <Compile Include="PathFinder\PathFinderFast.cs" />
+    <Compile Include="PathFinder\PriorityQueueB.cs" />
     <Compile Include="Players\AI.cs" />
     <Compile Include="Players\Human.cs" />
     <Compile Include="Players\Player.cs" />
