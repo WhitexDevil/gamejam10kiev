@@ -27,7 +27,7 @@ namespace GoblinsGame
         Texture2D victoryTexture;
         Texture2D blankTexture;
         SpriteFont hudFont;
-
+        List<Ground> grounds;  
         // Rendering members
         Vector2 cloud1Position;
         Vector2 cloud2Position;
@@ -54,6 +54,7 @@ namespace GoblinsGame
         // Helper members
         bool isDragging;
 
+        public object File { get; private set; }
 
         public void LoadAssets()
         {
@@ -115,6 +116,64 @@ namespace GoblinsGame
             playerTwo.Enemy = playerOne;
 
         }
+
+        void CreateLevel()
+        {
+            blocks = new List<Block>();
+            string[] lines = File.ReadAllLines("content/Levels/level" + currentLevel + ".txt");
+            //levelMap = new byte[lines[0].Length, lines.Length];
+
+            blockLength = (int)(Math.Round((double)Height / 27, 0));
+            levelLength = blockLength * lines[0].Length;
+            //Kotygoroshko.drawRectangle = new Rectangle(100, 300, 70, 70);
+            int x = 0;
+            int y = 0;
+
+            backList = new List<Rectangle>();
+            int backX = 0;
+            Rectangle backRect = new Rectangle(0, 0, backgroundTexture.Width, Height);
+            while (backX < levelLength)
+            {
+                backRect = new Rectangle(backX, 0, backgroundTexture.Width, Height);
+                backList.Add(backRect);
+                backX += backgroundTexture.Width;
+            }
+            //int i = 0;
+            //int j = 0;
+            foreach (string line in lines)
+            {
+                foreach (char c in line)
+                {
+                    Rectangle rect = new Rectangle(x, y, blockLength, blockLength);
+                    //levelMap[i,j] = 0;
+                    if (c == '1')
+                    {
+                        Block block = new Block(rect, blockGround1, this);
+                        blocks.Add(block);
+                        //levelMap[i,j] = 1;
+                    }
+                    if (c == '2')
+                    {
+                        Block block = new Block(rect, blockGround2, this);
+                        blocks.Add(block);
+                        //levelMap[i, j] = 1;
+                    }
+                    if (c == '3')
+                    {
+                        Block block = new Block(rect, blockGround3, this);
+                        blocks.Add(block);
+                        //levelMap[i, j] = 1;
+                    }
+                    
+                    x += blockLength;
+                    //i++;
+                }
+                //j++;
+                //i = 0;
+                x = 0;
+                y += blockLength;
+            }
+
 
         public override void LoadContent()
         {
