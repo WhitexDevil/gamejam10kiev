@@ -30,7 +30,7 @@ namespace GoblinsGame
 
         // Helper members
         bool isDragging;
-
+        private bool gameOver;
 
         public void LoadAssets()
         {
@@ -85,20 +85,7 @@ namespace GoblinsGame
             ScreenManager.Game.GraphicsDevice.Clear(Color.White);
 
             // Draw the Sky
-            ScreenManager.SpriteBatch.Draw(skyTexture, Vector2.Zero, Color.White);
-
-            // Draw Cloud #1
-            ScreenManager.SpriteBatch.Draw(cloud1Texture,
-                cloud1Position, Color.White);
-
-            // Draw the Mountain
-            ScreenManager.SpriteBatch.Draw(mountainTexture,
-                Vector2.Zero, Color.White);
-
-            // Draw Cloud #2
-            ScreenManager.SpriteBatch.Draw(cloud2Texture,
-                cloud2Position, Color.White);
-
+       
             // Draw the Castle, trees, and foreground 
             ScreenManager.SpriteBatch.Draw(foregroundTexture,
                 Vector2.Zero, Color.White);
@@ -107,11 +94,7 @@ namespace GoblinsGame
         void Start()
         {
             // Set initial wind direction
-            wind = Vector2.Zero;
-            isFirstPlayerTurn = false;
-            changeTurn = true;
-            // TODO: Reset catapult state
-            playerTwo.Catapult.CurrentState = CatapultState.Reset;
+          
         }
 
         // A simple helper to draw shadowed text.
@@ -140,89 +123,10 @@ namespace GoblinsGame
         void DrawHud()
         {
             // Draw Player Hud
-            ScreenManager.SpriteBatch.Draw(hudBackgroundTexture,
-                playerOneHUDPosition, Color.White);
-            ScreenManager.SpriteBatch.Draw(GetWeaponTexture(playerOne),
-                playerOneHUDPosition + new Vector2(33, 35), Color.White);
-            DrawString(hudFont, playerOne.Score.ToString(),
-                playerOneHUDPosition + new Vector2(123, 35), Color.White);
-            DrawString(hudFont, playerOne.Name,
-                playerOneHUDPosition + new Vector2(40, 1), Color.Blue);
+           
 
-            Rectangle rect = new Rectangle((int)playerOneHealthBarPosition.X,
-                                    (int)playerOneHealthBarPosition.Y,
-                                    (int)healthBarFullSize.X * playerOne.Health / 100,
-                                    (int)healthBarFullSize.Y);
-            Rectangle underRect = new Rectangle(rect.X, rect.Y, rect.Width + 1,
-                                                rect.Height + 1);
-            ScreenManager.SpriteBatch.Draw(blankTexture, underRect, Color.Black);
-            ScreenManager.SpriteBatch.Draw(blankTexture, rect, Color.Blue);
+         
 
-
-            // Draw Computer Hud
-            ScreenManager.SpriteBatch.Draw(hudBackgroundTexture,
-                playerTwoHUDPosition, Color.White);
-            ScreenManager.SpriteBatch.Draw(GetWeaponTexture(playerTwo),
-                playerTwoHUDPosition + new Vector2(33, 35), Color.White);
-            DrawString(hudFont, playerTwo.Score.ToString(),
-                playerTwoHUDPosition + new Vector2(123, 35), Color.White);
-            DrawString(hudFont, playerTwo.Name,
-                playerTwoHUDPosition + new Vector2(40, 1), Color.Red);
-
-            rect = new Rectangle((int)playerTwoHealthBarPosition.X,
-                                 (int)playerTwoHealthBarPosition.Y,
-                                 (int)healthBarFullSize.X * playerTwo.Health / 100,
-                                 (int)healthBarFullSize.Y);
-            underRect = new Rectangle(rect.X, rect.Y, rect.Width + 1,
-                                      rect.Height + 1);
-            ScreenManager.SpriteBatch.Draw(blankTexture, underRect, Color.Black);
-            ScreenManager.SpriteBatch.Draw(blankTexture, rect, Color.Red);
-
-            // Draw Wind direction
-            string text = "WIND";
-            Vector2 size = hudFont.MeasureString(text);
-            Vector2 windarrowScale = new Vector2(wind.Y / 10, 1);
-            ScreenManager.SpriteBatch.Draw(windArrowTexture,
-                                          windArrowPosition, null, Color.White, 0,
-                                          Vector2.Zero, windarrowScale,
-                                          wind.X > 0 ? SpriteEffects.None
-                                                     : SpriteEffects.FlipHorizontally,
-                                          0);
-
-            DrawString(hudFont, text,
-                       windArrowPosition - new Vector2(0, size.Y), Color.Black);
-            if (wind.Y == 0)
-            {
-                text = "NONE";
-                DrawString(hudFont, text, windArrowPosition, Color.Black);
-            }
-
-            // If first player turn
-            if (isFirstPlayerTurn)
-            {
-                // Prepare first player prompt message
-                text = !isDragging ? (isTwoHumanPlayers ? "Player 1, " : "")
-                                          + "Drag Anywhere to Fire"
-                                   : "Release to Fire!";
-                size = hudFont.MeasureString(text);
-            }
-            else
-            {
-                // Prepare second player prompt message
-                if (isTwoHumanPlayers)
-                    text = !isDragging ? "Player 2, Drag Anywhere to Fire!"
-                                       : "Release to Fire!";
-                else
-                    text = "I'll get you yet!";
-
-                size = hudFont.MeasureString(text);
-            }
-
-            DrawString(hudFont, text,
-                new Vector2(
-                    ScreenManager.GraphicsDevice.Viewport.Width / 2 - size.X / 2,
-                    ScreenManager.GraphicsDevice.Viewport.Height - size.Y),
-                    Color.Green);
 
         }
 
@@ -233,28 +137,15 @@ namespace GoblinsGame
         /// <returns>Ammo texture to draw in the HUD</returns>
         private Texture2D GetWeaponTexture(Player player)
         {
-            switch (player.Weapon)
-            {
-                case WeaponType.Normal:
-                    return ammoTypeNormalTexture;
-                case WeaponType.Split:
-                    return ammoTypeSplitTexture;
-                default:
-                    throw new ArgumentException("Player has invalid weapon type",
-                        "player");
-            }
+           
         }
 
         void DrawPlayerOne(GameTime gameTime)
         {
-            if (!gameOver)
-                playerOne.Draw(gameTime);
         }
 
         void DrawPlayerTwo(GameTime gameTime)
         {
-            if (!gameOver)
-                playerTwo.Draw(gameTime);
         }
 
         public GameplayScreen2(bool twoHumans)
@@ -265,7 +156,7 @@ namespace GoblinsGame
 
             random = new Random();
 
-            isTwoHumanPlayers = twoHumans;
+         
         }
 
         /// <summary>
@@ -276,96 +167,12 @@ namespace GoblinsGame
         {
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            // Check it one of the players reached 5 and stop the game
-            if ((playerOne.Catapult.GameOver || playerTwo.Catapult.GameOver) &&
-                (gameOver == false))
-            {
-                gameOver = true;
-
-                if (playerOne.Score > playerTwo.Score)
-                {
-                    // TODO: Play win sound 
-                }
-                else
-                {
-                    // TODO: Play lose sound
-                }
-
-                return;
-            }
-
-            // If Reset flag raised and both catapults are not animating - 
-            // active catapult finished the cycle, new turn!
-            if ((playerOne.Catapult.CurrentState == CatapultState.Reset ||
-                playerTwo.Catapult.CurrentState == CatapultState.Reset) &&
-                !(playerOne.Catapult.AnimationRunning ||
-                playerTwo.Catapult.AnimationRunning))
-            {
-                changeTurn = true;
-
-                if (playerOne.IsActive == true)
-                //Last turn was a left player turn?
-                {
-                    playerOne.IsActive = false;
-                    playerTwo.IsActive = true;
-                    isFirstPlayerTurn = false;
-                    playerOne.Catapult.CurrentState = CatapultState.Idle;
-                    if (!isTwoHumanPlayers)
-                        playerTwo.Catapult.CurrentState = CatapultState.Aiming;
-                    else
-                        playerTwo.Catapult.CurrentState = CatapultState.Idle;
-                }
-                else //It was an right player turn
-                {
-                    playerOne.IsActive = true;
-                    playerTwo.IsActive = false;
-                    isFirstPlayerTurn = true;
-                    playerTwo.Catapult.CurrentState = CatapultState.Idle;
-                    playerOne.Catapult.CurrentState = CatapultState.Idle;
-                }
-            }
-
-            if (changeTurn)
-            {
-                // Update wind
-                wind = new Vector2(random.Next(-1, 2),
-                    random.Next(minWind, maxWind + 1));
-
-                // Set new wind value to the players and 
-                playerOne.Catapult.Wind = playerTwo.Catapult.Wind =
-                    wind.X > 0 ? wind.Y : -wind.Y;
-                changeTurn = false;
-            }
-
-            // Update the players
-            playerOne.Update(gameTime);
-            playerTwo.Update(gameTime);
-
-            // Updates the clouds position
-            UpdateClouds(elapsed);
+         
 
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }
 
-        private void UpdateClouds(float elapsedTime)
-        {
-            // Move the clouds according to the wind
-            int windDirection = wind.X > 0 ? 1 : -1;
-
-            cloud1Position += new Vector2(24.0f, 0.0f) * elapsedTime *
-                windDirection * wind.Y;
-            if (cloud1Position.X > ScreenManager.GraphicsDevice.Viewport.Width)
-                cloud1Position.X = -cloud1Texture.Width * 2.0f;
-            else if (cloud1Position.X < -cloud1Texture.Width * 2.0f)
-                cloud1Position.X = ScreenManager.GraphicsDevice.Viewport.Width;
-
-            cloud2Position += new Vector2(16.0f, 0.0f) * elapsedTime *
-                windDirection * wind.Y;
-            if (cloud2Position.X > ScreenManager.GraphicsDevice.Viewport.Width)
-                cloud2Position.X = -cloud2Texture.Width * 2.0f;
-            else if (cloud2Position.X < -cloud2Texture.Width * 2.0f)
-                cloud2Position.X = ScreenManager.GraphicsDevice.Viewport.Width;
-        }
+      
 
         /// <summary>
         /// Input helper method provided by GameScreen.  Packages up the various /// input values for ease of use.
@@ -429,19 +236,7 @@ namespace GoblinsGame
             {
                 PauseCurrentGame();
             }
-            else if (isFirstPlayerTurn &&
-                (playerOne.Catapult.CurrentState == CatapultState.Idle ||
-                    playerOne.Catapult.CurrentState == CatapultState.Aiming))
-            {
-                //Read keyboard input
-                playerOne.HandleKeybordInput(input.CurrentKeyboardState);
-
-                //Read gamepad input
-                playerOne.HandleGamePadInput(input.CurrentGamePadState);
-
-                //Read mouse input
-                playerOne.HandleMouseInput(input.CurrentMouseState,
-                                           input.LastMouseState);
+         
 
                 if (input.Gestures.Count > 0)
                 {
