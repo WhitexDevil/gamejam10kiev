@@ -18,8 +18,7 @@ namespace GoblinsGame
 
         SpriteFont hudFont;
 
-        // Rendering members
-        Vector2 cloud1Position;
+    
 
 
         // Gameplay members
@@ -71,8 +70,7 @@ namespace GoblinsGame
             DrawBackground();
             // DrawComputer(gameTime);
             // TODO: Draw players
-            DrawPlayer(gameTime);
-            DrawEnemy(gameTime);
+          
 
             DrawHud();
 
@@ -131,13 +129,7 @@ namespace GoblinsGame
         }
 
 
-        void DrawEnemy(GameTime gameTime)
-        {
-        }
-
-        void DrawPlayer(GameTime gameTime)
-        {
-        }
+      
 
         public GameplayScreenBattle()
         {
@@ -146,7 +138,7 @@ namespace GoblinsGame
                 GestureType.Tap;
 
             random = new Random();
-
+            
 
         }
 
