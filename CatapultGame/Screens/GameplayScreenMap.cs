@@ -142,8 +142,6 @@ namespace GoblinsGame
             {
                 lines[i].Add(grounds[rand.Next(3)]);
             }
-            int x = 0;
-            int y = 0;
         }
 
 
