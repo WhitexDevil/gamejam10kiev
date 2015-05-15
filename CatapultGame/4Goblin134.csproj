@@ -158,6 +158,7 @@
     <Compile Include="PathFinder\PathFinderFast.cs" />
     <Compile Include="PathFinder\PriorityQueueB.cs" />
     <Compile Include="Players\AI.cs" />
+    <Compile Include="Players\Hero.cs" />
     <Compile Include="Players\Human.cs" />
     <Compile Include="Players\Player.cs" />
     <Compile Include="Screens\GameplayScreenBattle.cs" />
