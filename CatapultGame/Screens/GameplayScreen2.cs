@@ -11,42 +11,19 @@ using Microsoft.Xna.Framework.Input;
 
 namespace GoblinsGame
 {
-    class GameplayScreen1 : GameScreen1
+    class GameplayScreen2 : GameScreen1
     {
         // Texture Members
         Texture2D foregroundTexture;
-        Texture2D cloud1Texture;
-        Texture2D cloud2Texture;
-        Texture2D mountainTexture;
-        Texture2D skyTexture;
-        Texture2D hudBackgroundTexture;
-        Texture2D ammoTypeNormalTexture;
-        Texture2D ammoTypeSplitTexture;
-        Texture2D windArrowTexture;
-        Texture2D defeatTexture;
-        Texture2D victoryTexture;
-        Texture2D blankTexture;
+        
         SpriteFont hudFont;
 
         // Rendering members
         Vector2 cloud1Position;
-        Vector2 cloud2Position;
-
-        Vector2 playerOneHUDPosition;
-        Vector2 playerTwoHUDPosition;
-        Vector2 windArrowPosition;
-        Vector2 playerOneHealthBarPosition;
-        Vector2 playerTwoHealthBarPosition;
-        Vector2 healthBarFullSize;
+       
 
         // Gameplay members
-        Human playerOne;
-        Player playerTwo;
-        Vector2 wind;
-        bool changeTurn;
-        bool isFirstPlayerTurn;
-        bool isTwoHumanPlayers;
-        bool gameOver;
+        
         Random random;
         const int minWind = 0;
         const int maxWind = 10;
@@ -60,59 +37,18 @@ namespace GoblinsGame
             // Load textures
             foregroundTexture =
                 Load<Texture2D>("Textures/Backgrounds/gameplay_screen");
-            cloud1Texture = Load<Texture2D>("Textures/Backgrounds/cloud1");
-            cloud2Texture = Load<Texture2D>("Textures/Backgrounds/cloud2");
-            mountainTexture = Load<Texture2D>("Textures/Backgrounds/mountain");
-            skyTexture = Load<Texture2D>("Textures/Backgrounds/sky");
-            defeatTexture = Load<Texture2D>("Textures/Backgrounds/defeat");
-            victoryTexture = Load<Texture2D>("Textures/Backgrounds/victory");
-            hudBackgroundTexture = Load<Texture2D>("Textures/HUD/hudBackground");
-            windArrowTexture = Load<Texture2D>("Textures/HUD/windArrow");
-            ammoTypeNormalTexture = Load<Texture2D>("Textures/HUD/ammoTypeNormal");
-            ammoTypeSplitTexture = Load<Texture2D>("Textures/HUD/ammoTypeSplit");
-            blankTexture = Load<Texture2D>("Textures/Backgrounds/blank");
+          
 
             // Load font
             hudFont = Load<SpriteFont>("Fonts/HUDFont");
 
-            // Define initial cloud position
-            cloud1Position = new Vector2(224 - cloud1Texture.Width, 32);
-            cloud2Position = new Vector2(64, 90);
+            
 
             // TODO: Define intial HUD positions and Initialize human & AI players
-            // Define initial HUD positions
-            playerOneHUDPosition = new Vector2(7, 7);
-            playerTwoHUDPosition = new Vector2(613, 7);
-            windArrowPosition = new Vector2(345, 46);
-            Vector2 healthBarOffset = new Vector2(25, 82);
-            playerOneHealthBarPosition = playerOneHUDPosition + healthBarOffset;
-            playerTwoHealthBarPosition = playerTwoHUDPosition + healthBarOffset;
-            healthBarFullSize = new Vector2(130, 20);
-
-            // Initialize human & AI players
-            playerOne = new Human(ScreenManager.Game, ScreenManager.SpriteBatch,
-                PlayerSide.Left);
-            playerOne.Initialize();
-            playerOne.Name = "Player" + (isTwoHumanPlayers ? " 1" : "");
-
-            if (isTwoHumanPlayers)
-            {
-                playerTwo = new Human(ScreenManager.Game, ScreenManager.SpriteBatch,
-                    PlayerSide.Right);
-                playerTwo.Initialize();
-                playerTwo.Name = "Player 2";
-            }
-            else
-            {
-                playerTwo = new AI(ScreenManager.Game, ScreenManager.SpriteBatch);
-                playerTwo.Initialize();
-                playerTwo.Name = "AI";
-            }
+           
+            
 
 
-            // TODO: Add enemies
-            playerOne.Enemy = playerTwo;
-            playerTwo.Enemy = playerOne;
 
         }
 
@@ -321,7 +257,7 @@ namespace GoblinsGame
                 playerTwo.Draw(gameTime);
         }
 
-        public GameplayScreen1(bool twoHumans)
+        public GameplayScreen2(bool twoHumans)
         {
             EnabledGestures = GestureType.FreeDrag |
                 GestureType.DragComplete |
