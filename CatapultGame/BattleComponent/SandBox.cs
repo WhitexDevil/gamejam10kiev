@@ -112,16 +112,16 @@ namespace CatapultGame
                 int DeltaBalance = ForceBalance - NewForceBalance;
                 ForceBalance = NewForceBalance;
 
-                if (CurrentBattleData.Visualization != null)
-                    CurrentBattleData.Visualization.RecordTurn();
+                //if (CurrentBattleData.Visualization != null)
+                //    CurrentBattleData.Visualization.RecordTurn();
                 Side1.NextTurn(DeltaBalance)(CurrentBattleData);
 
                 CurrentBattleData.Reverse = !CurrentBattleData.Reverse;
                 CurrentBattleData.EraseDeadSquads();
 
 
-                if (CurrentBattleData.Visualization != null)
-                    CurrentBattleData.Visualization.RecordTurn();
+                //if (CurrentBattleData.Visualization != null)
+                //    CurrentBattleData.Visualization.RecordTurn();
                 Side2.NextTurn(-DeltaBalance)(CurrentBattleData);
                 CurrentBattleData.Reverse = !CurrentBattleData.Reverse;
 
