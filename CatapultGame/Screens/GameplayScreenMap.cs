@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Input;
+using CatapultGame.Screens;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace GoblinsGame
 {
@@ -26,8 +29,13 @@ namespace GoblinsGame
         Texture2D defeatTexture;
         Texture2D victoryTexture;
         Texture2D blankTexture;
+        Texture2D grassTexture;
+        Texture2D waterTexture;
+        Texture2D mountTexture;
         SpriteFont hudFont;
         List<Ground> grounds;  
+
+
         // Rendering members
         Vector2 cloud1Position;
         Vector2 cloud2Position;
@@ -119,60 +127,24 @@ namespace GoblinsGame
 
         void CreateLevel()
         {
-            blocks = new List<Block>();
-            string[] lines = File.ReadAllLines("content/Levels/level" + currentLevel + ".txt");
-            //levelMap = new byte[lines[0].Length, lines.Length];
-
-            blockLength = (int)(Math.Round((double)Height / 27, 0));
-            levelLength = blockLength * lines[0].Length;
-            //Kotygoroshko.drawRectangle = new Rectangle(100, 300, 70, 70);
+            Ground[] grounds = new Ground[3];
+            grounds[0] = new Ground(grassTexture, 0);
+            grounds[1] = new Ground(waterTexture, 1);
+            grounds[2] = new Ground(mountTexture, 2);
+            int levelLength = 128;
+            List<List<Ground>> lines = new List<List<Ground>>();
+            Random rand = new Random();
+            for(int i=0; i<levelLength; i++)
+            {
+                lines.Add(new List<Ground>());
+            }
+            for(int i = 0; i< levelLength; i++)
+            {
+                lines[i].Add(grounds[rand.Next(3)]);
+            }
             int x = 0;
             int y = 0;
-
-            backList = new List<Rectangle>();
-            int backX = 0;
-            Rectangle backRect = new Rectangle(0, 0, backgroundTexture.Width, Height);
-            while (backX < levelLength)
-            {
-                backRect = new Rectangle(backX, 0, backgroundTexture.Width, Height);
-                backList.Add(backRect);
-                backX += backgroundTexture.Width;
-            }
-            //int i = 0;
-            //int j = 0;
-            foreach (string line in lines)
-            {
-                foreach (char c in line)
-                {
-                    Rectangle rect = new Rectangle(x, y, blockLength, blockLength);
-                    //levelMap[i,j] = 0;
-                    if (c == '1')
-                    {
-                        Block block = new Block(rect, blockGround1, this);
-                        blocks.Add(block);
-                        //levelMap[i,j] = 1;
-                    }
-                    if (c == '2')
-                    {
-                        Block block = new Block(rect, blockGround2, this);
-                        blocks.Add(block);
-                        //levelMap[i, j] = 1;
-                    }
-                    if (c == '3')
-                    {
-                        Block block = new Block(rect, blockGround3, this);
-                        blocks.Add(block);
-                        //levelMap[i, j] = 1;
-                    }
-                    
-                    x += blockLength;
-                    //i++;
-                }
-                //j++;
-                //i = 0;
-                x = 0;
-                y += blockLength;
-            }
+        }
 
 
         public override void LoadContent()
