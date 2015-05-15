@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace CatapultGame
 {
-    using Maneuver = Action<BattleData>;
+    using Maneuver = Action<BattleData, Squad>;
 
     class SandBox
     {
@@ -109,7 +109,7 @@ namespace CatapultGame
         Squad CurrentSquad = null;
         public void Update(GameTime gameTime)
         {
-            //if (CurrentSquad == null || CurrentSquad.Action 
+            //if (CurrentSquad == null || CurrentSquad.Action
 
             //for (int i = 0; i < BattleData.AllyArmy.Length; i++)
             //    BattleData.AllyArmy.Update(gameTime);

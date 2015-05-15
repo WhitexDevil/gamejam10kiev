@@ -8,11 +8,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace CatapultGame
 {
-  
-        
-	using Maneuver = Action<BattleData>;
-	using Step = KeyValuePair<Point, float>;
-	public class Strategy
+
+
+    using Maneuver = Action<BattleData, Squad>;
+    using Step = KeyValuePair<Point, float>;
+    public class Strategy
     {
         public static Strategy Offensive = new Offensive();
         public static Strategy Deffensive = new Deffensive();
@@ -23,15 +23,15 @@ namespace CatapultGame
         {
             Maneuvers = new Maneuver[2];
         }
-        protected static int NearestToPoint(Point p1, Squad[] Army)
+        protected static int NearestToPoint(Point p1, Squad[] army)
         {
             int Temp = -1;
             double minDistance = Double.MaxValue;
-            for (int i = 0; i < Army.Length; i++)
+            for (int i = 0; i < army.Length; i++)
             {
 
-                double distance = DistanceAndPath.DistanceTo(p1, Army[i].Position);
-                if ((distance < minDistance) && Army[i].Alive)
+                double distance = DistanceAndPath.DistanceTo(p1, army[i].Position);
+                if ((distance < minDistance) && army[i].Alive)
                 {
 
                     minDistance = distance;
@@ -43,26 +43,26 @@ namespace CatapultGame
         /// <summary>
         /// Chose Nearest target to all army squads
         /// </summary>
-        /// <param name="Army"></param>
-        /// <param name="Targets"></param>
+        /// <param name="army"></param>
+        /// <param name="targets"></param>
         /// <returns></returns>
-        protected static int NearestToAll(Squad[] Army, Squad[] Targets)
+        protected static int NearestToAll(Squad[] army, Squad[] targets)
         {
             int Temp = -1;
-            double[] distances = new double[Targets.Length];
+            double[] distances = new double[targets.Length];
 
-            for (int i = 0; i < Targets.Length; i++)
+            for (int i = 0; i < targets.Length; i++)
             {
-                for (int j = 0; j < Army.Length; j++)
+                for (int j = 0; j < army.Length; j++)
                 {
-                    distances[i] += DistanceAndPath.DistanceTo(Army[j].Position, Targets[i].Position);
+                    distances[i] += DistanceAndPath.DistanceTo(army[j].Position, targets[i].Position);
                 }
             }
 
             double min = double.MaxValue;
             for (int i = 0; i < distances.Length; i++)
             {
-                if ((distances[i] < min) && Targets[i].Alive)
+                if ((distances[i] < min) && targets[i].Alive)
                 {
                     min = distances[i];
                     Temp = i;
@@ -72,45 +72,60 @@ namespace CatapultGame
             return Temp;
         }
 
-        protected static void AttackAndMove(Squad attacker, Squad target, Step[] Path, BattleData bd)
+        protected static void AttackAndMove(Squad attacker, Squad target, Step[] path, BattleData bd)
         {
+            attacker.CurrentAction.Type = Squad.ActionType.Attack;
+            attacker.CurrentAction.Target = target;
+
             int dmg = target.Amount;
             attacker.Attack(target);
 
-          
-            Move(attacker, Path, bd);
+            attacker.CurrentAction.Damage = dmg - target.Amount;
+
+            Move(attacker, path, bd);
+
+            if (attacker.CurrentAction.Type == Squad.ActionType.Move)
+                attacker.CurrentAction.Type = Squad.ActionType.AttackAndMove;
+
         }
 
-        protected static void MoveAndAttack(Squad attacker, Squad target, Step[] Path, BattleData bd)
+        protected static void MoveAndAttack(Squad attacker, Squad target, Step[] path, BattleData bd)
         {
+            attacker.CurrentAction.Type = Squad.ActionType.None;
 
-            if (Move(attacker, Path, bd))
+            if (Move(attacker, path, bd))
             {
+                attacker.CurrentAction.Type = attacker.CurrentAction.Type == Squad.ActionType.Move ?
+                    Squad.ActionType.AttackAndMove : Squad.ActionType.Attack;
+                attacker.CurrentAction.Target = target;
+
                 int dmg = target.Amount;
                 attacker.Attack(target);
 
-                
+                attacker.CurrentAction.Damage = dmg - target.Amount;
             }
 
         }
 
-        protected static bool Move(Squad mover, Step[] Path, BattleData bd)
+        protected static bool Move(Squad mover, Step[] path, BattleData bd)
         {
-            if (Path == null)
+            if (path == null)
                 return false;
-            int length = Path.Length;
+            int length = path.Length;
             if (length < 1)
                 return true;
             double movement = mover.Unit.MovementSpeed;
-            Point temp = Path[0].Key;
+            Point temp = path[0].Key;
 
             for (int k = length - 1; k > 0; k--)
             {
-                if (Path[k].Value > movement)
+                if (path[k].Value > movement)
                 {
-                    temp = Path[k + 1].Key;
+                    temp = path[k + 1].Key;
 
-                   
+                    mover.CurrentAction.Type = Squad.ActionType.Move;
+                    mover.CurrentAction.Path = path.Select(x => x.Key).SkipWhile(x => x != temp).TakeWhile(x => x != mover.Position).Concat(new Point[] { mover
+                    .Position}).ToArray();
 
                     bd.Relocate(mover.Position, temp);
                     mover.Position = temp;
@@ -118,30 +133,32 @@ namespace CatapultGame
                 }
             }
 
-            
+            mover.CurrentAction.Type = Squad.ActionType.Move;
+            mover.CurrentAction.Path = path.Select(x => x.Key).SkipWhile(x => x != temp).TakeWhile(x => x != mover.Position).Concat(new Point[] { mover
+                    .Position}).ToArray();
 
             bd.Relocate(mover.Position, temp);
             mover.Position = temp;
             return true;
         }
 
-        protected static Point GetSafeFrom(Point Victum, Point Enemy)
+        protected static Point GetSafeFrom(Point victum, Point enemy)
         {
-            Point temp = new Point(Victum.X - Enemy.X, Victum.Y - Enemy.Y);
+            Point temp = new Point(victum.X - enemy.X, victum.Y - enemy.Y);
             List<Point> SafePlaces = new List<Point>();
             if (temp.X <= 0)
-                SafePlaces.Add(new Point(0, Victum.Y));
+                SafePlaces.Add(new Point(0, victum.Y));
             if (temp.X >= 0)
-                SafePlaces.Add(new Point(99, Victum.Y));
+                SafePlaces.Add(new Point(99, victum.Y));
             if (temp.Y <= 0)
-                SafePlaces.Add(new Point(Victum.X, 0));
+                SafePlaces.Add(new Point(victum.X, 0));
             if (temp.Y >= 0)
-                SafePlaces.Add(new Point(Victum.X, 99));
+                SafePlaces.Add(new Point(victum.X, 99));
 
             double max = double.MinValue;
             foreach (var item in SafePlaces)
             {
-                double dist = DistanceAndPath.DistanceTo(Victum, item);
+                double dist = DistanceAndPath.DistanceTo(victum, item);
                 if (dist > max)
                 {
                     max = dist;

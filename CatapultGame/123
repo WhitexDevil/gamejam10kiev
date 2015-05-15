@@ -174,15 +174,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <AppxManifest Include="Package.appxmanifest">
-      <SubType>Designer</SubType>
-    </AppxManifest>
     <None Include="ApplicationInsights.config" />
     <None Include="CatapultGame_TemporaryKey.pfx" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\grass.png" />
+    <Content Include="Content\hero.png" />
     <Content Include="Content\mount.png" />
     <Content Include="Content\water.png" />
     <Content Include="Properties\Default.rd.xml" />

@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Input;
 using CatapultGame.Screens;
 using System.IO;
 using Newtonsoft.Json;
+using CatapultGame.Players;
 
 namespace GoblinsGame
 {
@@ -32,12 +33,14 @@ namespace GoblinsGame
         Texture2D grassTexture;
         Texture2D waterTexture;
         Texture2D mountTexture;
+        Texture2D heroTexture;
         Ground[] grounds = new Ground[3];
 
         List<List<Ground>> map = new List<List<Ground>>();
         Rectangle rect;
         int levelLength = 128;
         int blockLength = 50;
+        Hero player;
         //SpriteFont hudFont;
         //List<Ground> grounds;  
 
@@ -165,13 +168,18 @@ namespace GoblinsGame
             grassTexture = Load<Texture2D>("grass");
             mountTexture = Load<Texture2D>("mount");
             waterTexture = Load<Texture2D>("water");
-            rect = new Rectangle(0, 0, blockLength, blockLength);
+            heroTexture = Load<Texture2D>("hero");
 
+            rect = new Rectangle(0, 0, blockLength, blockLength);
+            player = new Hero(heroTexture);
             CreateLevel();
             base.LoadContent();
         }
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
+            MouseState state = Mouse.GetState();
+            if(state.LeftButton == ButtonState.Pressed)
+
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }
         public override void Draw(GameTime gameTime)
@@ -179,6 +187,7 @@ namespace GoblinsGame
             float elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             ScreenManager.SpriteBatch.Begin();
+
             int x = 0, y = 0;
             for (int i = 0; i < levelLength; i++)
             {             
@@ -191,6 +200,7 @@ namespace GoblinsGame
                 x = 0;
                 y = i * blockLength;
             }
+            ScreenManager.SpriteBatch.Draw(player.Texture, new Rectangle(0,0,blockLength,blockLength),Color.White);
             // Render all parts of the screen
             //DrawBackground();
             //// DrawComputer(gameTime);
